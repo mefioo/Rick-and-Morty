@@ -1,0 +1,41 @@
+.tr {
+	height: 83px;
+	width: 100%;
+}
+
+.tr td img {
+	width: 50px;
+	height: 50px;
+	border-radius: 15px;
+	border: 2px dashed #e5eaf0;
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.name {
+	margin-top: 20px;
+	margin-bottom: 4px;
+	font-weight: 500;
+	height: 19px;
+	font-size: 15px;
+}
+
+.species {
+	font-family: 'Oswald';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 15px;
+	line-height: 130%;
+	margin-top: 0;
+	margin-bottom: 20px;
+	color: #484f53;
+}
+
+.tr td:first-child {
+	text-align: center;
+	width: 64px;
+}
+
+.tr td:first-child input {
+	margin-top: 24px;
+	margin-bottom: 41px;
+}

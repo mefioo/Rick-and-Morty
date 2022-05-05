@@ -1,0 +1,15 @@
+table th {
+	border-bottom: 1px solid #cbd4e2;
+}
+
+.head {
+	height: 42px;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+tr th:first-child {
+	text-align: center;
+	width: 64px;
+}
+

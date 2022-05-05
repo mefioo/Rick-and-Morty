@@ -1,0 +1,33 @@
+.label {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-right: 30px;
+	color: #484F53;
+}
+
+.label p {
+	margin: 0;
+}
+
+.arrows {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.icon {
+	width: 20px;
+	height: 12px;
+	color: #c6c8c9;
+}
+
+.icon--acitve {
+	color: #5f6569;
+}
+
+.icon:nth-child(2) {
+	margin-top: -10px;
+}

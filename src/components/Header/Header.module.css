@@ -1,0 +1,22 @@
+.header {
+	width: 1161px;
+	height: 94px;
+	display: grid;
+	margin-top: 10px;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.header h1 {
+	margin: 0;
+	font-size: 24px;
+	font-weight: 700;
+	height: 30px;
+	margin-bottom: 25px;
+	grid-column: span 3;
+}
+
+.header form {
+	width: 680px;
+	height: 40px;
+	grid-column: span 2;
+}
