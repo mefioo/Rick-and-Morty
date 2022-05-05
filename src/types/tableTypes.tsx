@@ -1,4 +1,4 @@
-type characterInfoType = {
+export type characterInfoType = {
 	created: string;
 	episode: string[];
 	gender: string;
@@ -41,6 +41,7 @@ export type necessaryCharacterInfoType = {
 	origin: {
 		name: string;
 		url: string;
+		type: string;
 	};
 	status: string;
 	species: string;

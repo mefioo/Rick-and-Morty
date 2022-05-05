@@ -1,8 +1,9 @@
+import React from 'react';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classes from './Input.module.css';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-const Input = ({
+const ButtonInput = ({
 	placeholder,
 	icon,
 }: {
@@ -11,10 +12,10 @@ const Input = ({
 }) => {
 	return (
 		<div className={classes['input-group']}>
-			<input type='text' placeholder={placeholder} />
+			<button value={placeholder}>{placeholder}</button>
 			<FontAwesomeIcon className={classes.icon} icon={icon} />
 		</div>
 	);
 };
 
-export default Input;
+export default ButtonInput;
