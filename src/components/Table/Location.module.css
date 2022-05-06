@@ -1,0 +1,48 @@
+.location {
+	position: absolute;
+	width: 126px;
+	height: auto;
+	top: 24px;
+	left: -138px;
+	box-sizing: border-box;
+	background: #ffffff;
+	border: 1px solid #cbd4e2;
+	box-shadow: 4px 4px 8px rgba(221, 227, 236, 0.5);
+	border-radius: 5px;
+	font-family: 'Oswald';
+	font-style: normal;
+	font-weight: 400;
+}
+
+.location div {
+	width: 100%;
+	height: 24px;
+	font-size: 12px;
+	border-bottom: 1px solid #e5eaf0;
+}
+
+.location div p {
+	height: 16px;
+	margin-top: 8px;
+	margin: 8px 0px;
+	padding-left: 12px;
+	color: #8c9193;
+}
+
+.location p:nth-child(2) {
+	width: auto;
+	height: auto;
+	font-size: 13px;
+	margin-top: 8px;
+	margin-left: 16px;
+	margin-bottom: 0;
+}
+
+.location p:nth-child(3) {
+	width: auto;
+	height: 17px;
+	font-size: 13px;
+	color: #484f53;
+    margin-top: 8px;
+	margin-left: 16px;
+}

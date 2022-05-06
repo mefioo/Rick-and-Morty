@@ -10,6 +10,7 @@ const Table = React.memo(() => {
 	const dispatch = useDispatch();
 
 	const characters = useSelector((state: StoreState) => state.characters);
+	console.log(characters.results[11]);
 
 	useEffect(() => {
 		dispatch(getCharacters() as any);
@@ -21,10 +22,10 @@ const Table = React.memo(() => {
 				<TableHeader />
 				<tbody>
 					<TableRow {...characters.results[0]} />
-					<TableRow {...characters.results[1]} />
-					<TableRow {...characters.results[2]} />
-					<TableRow {...characters.results[3]} />
-					<TableRow {...characters.results[4]} />
+					<TableRow {...characters.results[11]} />
+					<TableRow {...characters.results[7]} />
+					<TableRow {...characters.results[5]} />
+					<TableRow {...characters.results[6]} />
 				</tbody>
 			</table>
 		</div>

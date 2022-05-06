@@ -2,14 +2,21 @@ import { charactersActions } from '../slices/characters-slice';
 import { apiDataType, characterInfoType } from '../types/tableTypes';
 
 const getOrigins = async (data: characterInfoType[]) => {
-	const origins = [
-		...new Map(data.map((item) => [item.origin['name'], item.origin])).values(),
+	const originsAndLocations = [
+		...data.map((item) => item.origin),
+		...data.map((item) => item.location),
+	];
+
+	const originsAndLocationsSet = [
+		...new Map(
+			originsAndLocations.map((item) => [item['name'], item])
+		).values(),
 	].filter((item) => item.url !== '');
 
 	let responses: { id: number; name: string; type: string }[] = [];
 
 	await Promise.all(
-		origins.map(async (origin) => {
+		originsAndLocationsSet.map(async (origin) => {
 			const data = await fetch(origin.url);
 			responses.push(await data.json());
 		})
@@ -20,7 +27,7 @@ const getOrigins = async (data: characterInfoType[]) => {
 	];
 };
 
-const filerCharactersData = (
+const filterCharactersData = (
 	data: apiDataType,
 	origins: { name: string; type: string }[]
 ) => {
@@ -33,11 +40,16 @@ const filerCharactersData = (
 			url: item.origin.url,
 			type: origins.find((origin) => origin.name === item.origin.name)?.type,
 		},
-		location: item.location,
+		location: {
+			name: item.location.name,
+			url: item.location.url,
+			type: origins.find((origin) => origin.name === item.location.name)?.type,
+		},
 		episode: item.episode,
 		status: item.status,
 		species: item.species,
 	}));
+
 	return { info: data.info, results: charactersInfo };
 };
 
@@ -52,10 +64,12 @@ export const getCharacters = () => {
 
 		try {
 			const data: apiDataType = await fetchData();
-			const origins = await getOrigins(data.results);
+			const originsAndLocations = await getOrigins(data.results);
 
 			dispatch(
-				charactersActions.changeCharacters(filerCharactersData(data, origins))
+				charactersActions.changeCharacters(
+					filterCharactersData(data, originsAndLocations)
+				)
 			);
 		} catch (error) {
 			console.log(error);

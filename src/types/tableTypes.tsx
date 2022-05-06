@@ -37,6 +37,7 @@ export type necessaryCharacterInfoType = {
 	location: {
 		name: string;
 		url: string;
+		type: string;
 	};
 	origin: {
 		name: string;
