@@ -1,5 +1,38 @@
 import { charactersActions } from '../slices/characters-slice';
-import { apiDataType, characterInfoType } from '../types/tableTypes';
+import {
+	apiDataType,
+	characterInfoType,
+	locationsType,
+} from '../types/tableTypes';
+
+const API_LOCATION = 'https://rickandmortyapi.com/api/location/';
+const API_EPISODE = 'https://rickandmortyapi.com/api/episode/';
+
+const createSetOfNumbersFromStrings = (array: string[]) => {
+	return [
+		...new Set(
+			array
+				.map((item) => item.slice(item.lastIndexOf('/') + 1))
+				.filter((item) => item !== '')
+		),
+	].join(',');
+};
+
+const getTwoRandomArrayElements = (array: string[]) => {
+	return array.sort(() => 0.5 - Math.random()).slice(0, 2);
+};
+
+const getEpisodes = async (data: string[]) => {
+	const episodeNumbers = createSetOfNumbersFromStrings(data);
+
+	const response = await fetch(API_EPISODE + episodeNumbers);
+	const episodeData = await response.json();
+
+	return episodeData.map((item: { name: string; url: string }) => ({
+		name: item.name,
+		url: item.url,
+	}));
+};
 
 const getOrigins = async (data: characterInfoType[]) => {
 	const originsAndLocations = [
@@ -7,29 +40,26 @@ const getOrigins = async (data: characterInfoType[]) => {
 		...data.map((item) => item.location),
 	];
 
-	const originsAndLocationsSet = [
-		...new Map(
-			originsAndLocations.map((item) => [item['name'], item])
-		).values(),
-	].filter((item) => item.url !== '');
-
-	let responses: { id: number; name: string; type: string }[] = [];
-
-	await Promise.all(
-		originsAndLocationsSet.map(async (origin) => {
-			const data = await fetch(origin.url);
-			responses.push(await data.json());
-		})
+	const locations = createSetOfNumbersFromStrings(
+		originsAndLocations.map((item) => item.url)
 	);
+
+	const response = await fetch(API_LOCATION + locations);
+	const locationsData = await response.json();
+
 	return [
-		...responses.map((item) => ({ name: item.name, type: item.type })),
+		...locationsData.map((item: { name: string; type: string }) => ({
+			name: item.name,
+			type: item.type,
+		})),
 		{ name: 'unknown', type: '' },
 	];
 };
 
 const filterCharactersData = (
 	data: apiDataType,
-	origins: { name: string; type: string }[]
+	origins: { name: string; type: string }[],
+	episodes: { name: string; url: string }[]
 ) => {
 	const charactersInfo = data.results.map((item) => ({
 		id: item.id,
@@ -45,7 +75,10 @@ const filterCharactersData = (
 			url: item.location.url,
 			type: origins.find((origin) => origin.name === item.location.name)?.type,
 		},
-		episode: item.episode,
+		episode: (item.episode.length > 2
+			? getTwoRandomArrayElements(item.episode)
+			: item.episode
+		).map((episode) => episodes.find((item) => item.url === episode)),
 		status: item.status,
 		species: item.species,
 	}));
@@ -64,11 +97,16 @@ export const getCharacters = () => {
 
 		try {
 			const data: apiDataType = await fetchData();
-			const originsAndLocations = await getOrigins(data.results);
+			const originsAndLocations: locationsType[] = await getOrigins(
+				data.results
+			);
+			const episodes: { name: string; url: string }[] = await getEpisodes([
+				...new Set(data.results.map((item) => item.episode).flat()),
+			]);
 
 			dispatch(
 				charactersActions.changeCharacters(
-					filterCharactersData(data, originsAndLocations)
+					filterCharactersData(data, originsAndLocations, episodes)
 				)
 			);
 		} catch (error) {

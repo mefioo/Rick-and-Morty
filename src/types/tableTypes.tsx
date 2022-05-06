@@ -30,7 +30,7 @@ export type apiDataType = {
 };
 
 export type necessaryCharacterInfoType = {
-	episode: string[];
+	episode: { name: string; url: string }[];
 	id: number;
 	name: string;
 	image: string;
@@ -56,4 +56,9 @@ export type necessaryApiDataType = {
 		prev: null;
 	};
 	results: necessaryCharacterInfoType[];
+};
+
+export type locationsType = {
+	name: string;
+	type: string;
 };

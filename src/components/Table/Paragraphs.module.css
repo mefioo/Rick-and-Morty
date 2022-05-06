@@ -1,27 +1,10 @@
-.origin-name {
-	font-weight: 400;
-	font-size: 15px;
-	color: #1a2328;
-	height: 19px;
-	margin-top: 23px;
-	margin-bottom: 0px;
-}
-
-.origin-type {
-	font-weight: 400;
-	font-size: 15px;
-	color: #484f53;
-	height: 19px;
-	margin-top: 8px;
-	margin-bottom: 13px;
-}
-
 .name {
 	margin-top: 20px;
 	margin-bottom: 4px;
 	font-weight: 500;
 	height: 18px;
 	font-size: 15px;
+	color: #1a2328;
 }
 
 .species {
@@ -33,4 +16,14 @@
 	margin-top: 0;
 	margin-bottom: 20px;
 	color: #484f53;
+}
+
+.species-dark {
+	font-weight: 500;
+	height: 18px;
+	font-size: 15px;
+	line-height: 130%;
+	margin-top: 0;
+	margin-bottom: 20px;
+	color: #1a2328;
 }

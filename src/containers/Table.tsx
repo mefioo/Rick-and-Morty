@@ -10,7 +10,6 @@ const Table = React.memo(() => {
 	const dispatch = useDispatch();
 
 	const characters = useSelector((state: StoreState) => state.characters);
-	console.log(characters.results[11]);
 
 	useEffect(() => {
 		dispatch(getCharacters() as any);

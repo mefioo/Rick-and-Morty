@@ -6,11 +6,13 @@ import Location from './Location';
 import Paragraphs from './Paragraphs';
 import Status from './Status';
 
-const TableRow = (data: necessaryCharacterInfoType) => {
+const TableRow = React.memo((data: necessaryCharacterInfoType) => {
 	const [isOriginHovered, setIsOriginHovered] = useState(false);
 	const isDead = useMemo(() => {
 		return data.status === 'Dead';
 	}, [data.status]);
+
+	console.log(data.episode);
 
 	const originHoverHandler = () => {
 		setIsOriginHovered(true);
@@ -26,7 +28,7 @@ const TableRow = (data: necessaryCharacterInfoType) => {
 				className={!isDead ? classes.tr : `${classes.tr} ${classes['tr-dead']}`}
 			>
 				<td>
-					<Checkbox/>
+					<Checkbox />
 				</td>
 				<td>
 					<Paragraphs
@@ -45,7 +47,7 @@ const TableRow = (data: necessaryCharacterInfoType) => {
 				>
 					<Paragraphs
 						dead={isDead}
-						className={['origin-name', 'origin-type']}
+						className={['name', 'species']}
 						name={data.origin ? data.origin.name : ''}
 						additionalInfo={data.origin ? data.origin.type : ''}
 					/>
@@ -55,8 +57,12 @@ const TableRow = (data: necessaryCharacterInfoType) => {
 				</td>
 				<td>
 					<Paragraphs
-						dead
-						name={data.episode ? `${data.episode.length}` : ''}
+						dead={isDead}
+						name={data.episode ? `${data.episode[0].name}` : ''}
+						additionalInfo={
+							data.episode && data.episode[1] ? `${data.episode[1].name}` : ''
+						}
+						className={['name', 'species-dark']}
 					/>
 				</td>
 				<td className={classes.status}>
@@ -65,6 +71,6 @@ const TableRow = (data: necessaryCharacterInfoType) => {
 			</tr>
 		</React.Fragment>
 	);
-};
+});
 
 export default TableRow;
