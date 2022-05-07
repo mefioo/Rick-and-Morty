@@ -6,7 +6,7 @@ import { StoreState } from '../../store';
 
 const definePaginationArray = (numOfPages: number, currentPage: number) => {
 	if (numOfPages < 7) {
-		return [...Array(numOfPages).keys()].map((item) => String(item));
+		return [...Array(numOfPages).keys()].map((item) => String(item + 1));
 	}
 	if (currentPage < 3 || currentPage > numOfPages - 2) {
 		return [
@@ -52,7 +52,7 @@ const Pagination = () => {
 	const currentPage = useSelector(
 		(state: StoreState) => state.characters.currentPage
 	);
-	const numOfPages = Math.ceil(pages / 20);
+	const numOfPages = Math.ceil((pages * 4) / 20);
 
 	const numbersToDisplay = definePaginationArray(numOfPages, currentPage);
 	const content = numbersToDisplay.map((item) =>

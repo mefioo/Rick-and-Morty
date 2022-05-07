@@ -1,16 +1,16 @@
 import React from 'react';
 import classes from './Form.module.css';
 import Input from './Input';
-import ButtonInput from './ButtonInput';
+import DropdownInput from './DropdownInput';
 import { faMagnifyingGlass, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 const Form = () => {
 	return (
 		<form className={classes.form}>
 			<Input placeholder='Search' icon={faMagnifyingGlass} />
-			<ButtonInput placeholder='Species' icon={faSortDown} />
-			<ButtonInput placeholder='Origin' icon={faSortDown} />
-			<ButtonInput placeholder='Status' icon={faSortDown} />
+			<DropdownInput placeholder='Species' icon={faSortDown} />
+			<DropdownInput placeholder='Origin' icon={faSortDown} />
+			<DropdownInput select placeholder='Status' icon={faSortDown} />
 		</form>
 	);
 };

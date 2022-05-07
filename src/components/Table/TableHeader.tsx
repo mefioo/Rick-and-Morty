@@ -1,14 +1,26 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { StoreState } from '../../store';
 import Checkbox from '../UI/Checkbox';
 import Label from './Label';
 import classes from './TableHeader.module.css';
 
 const TableHeader = () => {
+	const resultsLength = useSelector(
+		(state: StoreState) => state.characters.results.length
+	);
+	const idInRows = useSelector((state: StoreState) => state.tableRows.rows).map(
+		(item) => item.id
+	);
+
 	return (
 		<thead className={classes.head}>
 			<tr>
 				<th>
-					<Checkbox />
+					<Checkbox
+						ids={idInRows}
+						disabled={resultsLength === 0 ? true : false}
+					/>
 				</th>
 				<th>
 					<Label name='Name' />

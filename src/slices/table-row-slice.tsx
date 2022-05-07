@@ -2,9 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 type rowType = {
 	rows: {
-		characterName: string;
-		characterId: number;
-		isSelected: boolean;
+		id: number;
+		isChecked: boolean;
 	}[];
 };
 

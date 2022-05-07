@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import classes from './PaginationButton.module.css';
 import { StoreState } from '../../store';
 import { charactersActions } from '../../slices/characters-slice';
+import { tableRowActions } from '../../slices/table-row-slice';
 
 const PaginationButton = (props: { content: string; maxPage?: number }) => {
 	const dispatch = useDispatch();
@@ -10,6 +11,8 @@ const PaginationButton = (props: { content: string; maxPage?: number }) => {
 	const pageNo = useSelector(
 		(state: StoreState) => state.characters.currentPage
 	);
+	const results = useSelector((state: StoreState) => state.characters.results);
+
 	const className =
 		String(pageNo) === props.content
 			? `${classes.button} ${classes['button--current']}`
@@ -37,6 +40,13 @@ const PaginationButton = (props: { content: string; maxPage?: number }) => {
 
 		dispatch(
 			charactersActions.updatePageNumber({ currentPage: usersPageChoice })
+		);
+		dispatch(
+			tableRowActions.updateRows({
+				rows: results
+					.slice((usersPageChoice - 1) * 5, (usersPageChoice - 1) * 5 + 5)
+					.map((item) => ({ id: item.id, isChecked: false })),
+			})
 		);
 	};
 

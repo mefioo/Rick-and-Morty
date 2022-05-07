@@ -1,4 +1,7 @@
+import { CaseReducerActions } from '@reduxjs/toolkit';
+import { iteratorSymbol } from 'immer/dist/internal';
 import { charactersActions } from '../slices/characters-slice';
+import { tableRowActions } from '../slices/table-row-slice';
 import {
 	apiDataType,
 	characterInfoType,
@@ -28,7 +31,11 @@ const getEpisodes = async (data: string[]) => {
 	const response = await fetch(API_EPISODE + episodeNumbers);
 	const episodeData = await response.json();
 
-	return episodeData.map((item: { name: string; url: string }) => ({
+	const arrayEpisodeData = Array.isArray(episodeData)
+		? episodeData
+		: [episodeData];
+
+	return arrayEpisodeData.map((item: { name: string; url: string }) => ({
 		name: item.name,
 		url: item.url,
 	}));
@@ -47,8 +54,12 @@ const getOrigins = async (data: characterInfoType[]) => {
 	const response = await fetch(API_LOCATION + locations);
 	const locationsData = await response.json();
 
+	const arrayLocationsData = Array.isArray(locationsData)
+		? locationsData
+		: [locationsData];
+
 	return [
-		...locationsData.map((item: { name: string; type: string }) => ({
+		...arrayLocationsData.map((item: { name: string; type: string }) => ({
 			name: item.name,
 			type: item.type,
 		})),
@@ -86,16 +97,30 @@ const filterCharactersData = (
 	return { info: data.info, results: charactersInfo };
 };
 
-export const getCharacters = (apiLink: string, pageNumber: number) => {
-	return async (dispatch: any) => {
-		const fetchData = async () => {
-			const response = await fetch(apiLink);
-			const data = await response.json();
-			return data;
-		};
+const fetchData = async (apiLink: string) => {
+	const response = await fetch(apiLink);
+	const data = await response.json();
+	return data;
+};
 
+export const updateCharacters = (
+	apiLink: string,
+	pageNumber: number,
+	type: string
+) => {
+	return async (dispatch: any) => {
 		try {
-			const data: apiDataType = await fetchData();
+			const data: apiDataType = await fetchData(apiLink);
+			if (Object.keys(data).includes('error')) {
+				if (type === 'ADD') {
+					dispatch(charactersActions.addCharacters({ info: {}, results: [] }));
+				}
+				if (type === 'SET') {
+					dispatch(charactersActions.setCharacters({ info: {}, results: [] }));
+				}
+				return;
+			}
+
 			const originsAndLocations: locationsType[] = await getOrigins(
 				data.results
 			);
@@ -103,10 +128,22 @@ export const getCharacters = (apiLink: string, pageNumber: number) => {
 				...new Set(data.results.map((item) => item.episode).flat()),
 			]);
 
+			const dataToDispatch = {
+				...filterCharactersData(data, originsAndLocations, episodes),
+				currentPage: pageNumber,
+			};
+			if (type === 'ADD') {
+				dispatch(charactersActions.addCharacters(dataToDispatch));
+			}
+			if (type === 'SET') {
+				dispatch(charactersActions.setCharacters(dataToDispatch));
+			}
+
 			dispatch(
-				charactersActions.updateCharacters({
-					...filterCharactersData(data, originsAndLocations, episodes),
-					currentPage: pageNumber,
+				tableRowActions.updateRows({
+					rows: dataToDispatch.results
+						.slice(0, 5)
+						.map((item) => ({ id: item.id, isChecked: false })),
 				})
 			);
 		} catch (error) {

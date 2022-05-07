@@ -1,20 +1,18 @@
 .input-group {
+	position: relative;
 	width: 140px;
 	height: 40px;
 	margin-right: 30px;
 	border-radius: 5px;
 	background-color: white;
 	border: 1px solid #bac6d8;
-	overflow: hidden;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+	/* overflow: hidden; */
 }
 
 .input-group input,
-button {
-	width: 100%;
+button,
+select {
+	width: 140px;
 	height: 100%;
 	text-align: left;
 	padding: 0;
@@ -24,14 +22,35 @@ button {
 	font-family: 'Oswald', sans-serif;
 	font-size: 14px;
 	padding-left: 12px;
+	border-radius: 5px;
+}
+
+.input-group input {
+	width: 128px;
+}
+
+.input-group select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-indent: 1px;
+	text-overflow: '';
+}
+
+.input-group input:focus,
+button:focus,
+select:focus {
+	outline: none;
 }
 
 .icon {
-	margin-top: 12px;
-	margin-bottom: 17px;
-	padding-right: 5px;
-	width: 20px;
+	position: absolute;
+	content: '';
+	margin: 0;
+	width: 7.5px;
 	height: 12px;
+	top: 12px;
+	left: 120px;
+	z-index: 100;
 }
 
 .input-group:first-child svg {

@@ -11,11 +11,16 @@ const characterSlice = createSlice({
 	name: 'characters',
 	initialState: initialState,
 	reducers: {
-		updateCharacters(state, action) {
+		setCharacters(state, action) {
+			state.info = action.payload.info;
+			state.results = action.payload.results;
+			state.currentPage = action.payload.currentPage;
+		},
+		addCharacters(state, action) {
 			state.info = {
 				count: action.payload.info.count,
 				next: action.payload.info.next,
-				pages: state.info.pages,
+				pages: action.payload.info.pages,
 				prev: action.payload.info.prev,
 			};
 			state.results = state.results.concat(action.payload.results);
