@@ -12,8 +12,6 @@ const TableRow = React.memo((data: necessaryCharacterInfoType) => {
 		return data.status === 'Dead';
 	}, [data.status]);
 
-	console.log(data.episode);
-
 	const originHoverHandler = () => {
 		setIsOriginHovered(true);
 	};
@@ -39,7 +37,7 @@ const TableRow = React.memo((data: necessaryCharacterInfoType) => {
 					/>
 				</td>
 				<td>
-					<img src={data.image}></img>
+					<img alt='Avatar of the character' src={data.image}></img>
 				</td>
 				<td
 					onMouseEnter={originHoverHandler}

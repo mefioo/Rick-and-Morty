@@ -1,0 +1,15 @@
+.button {
+	height: 40px;
+	width: 40px;
+	background: #ffffff;
+	border: 1px solid #bac6d8;
+	box-shadow: 0px 2px 4px #dde3ec;
+	border-radius: 5px;
+	margin-left: 4px;
+	padding: 0;
+    text-align: center;
+}
+
+.button--current {
+	background-color: #EEF1F5;
+}

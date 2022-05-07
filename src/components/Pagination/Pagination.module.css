@@ -1,6 +1,15 @@
 .pagination {
 	width: 1161px;
 	height: 40px;
-	background-color: red;
 	margin-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: end;
+	align-items: center;
+}
+
+.pagination p {
+	width: 40px;
+	text-align: center;
+	margin-left: 4px;
 }

@@ -1,10 +1,75 @@
-import React from 'react'
-import classes from './Pagination.module.css'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import classes from './Pagination.module.css';
+import PaginationButton from './PaginationButton';
+import { StoreState } from '../../store';
+
+const definePaginationArray = (numOfPages: number, currentPage: number) => {
+	if (numOfPages < 7) {
+		return [...Array(numOfPages).keys()].map((item) => String(item));
+	}
+	if (currentPage < 3 || currentPage > numOfPages - 2) {
+		return [
+			'1',
+			'2',
+			'3',
+			'...',
+			`${numOfPages - 2}`,
+			`${numOfPages - 1}`,
+			`${numOfPages}`,
+		];
+	}
+	if (currentPage === 3) {
+		return ['1', '2', '3', '4', '...', `${numOfPages - 1}`, `${numOfPages}`];
+	}
+	if (currentPage === numOfPages - 2) {
+		return [
+			'1',
+			'2',
+			'...',
+			`${numOfPages - 3}`,
+			`${numOfPages - 2}`,
+			`${numOfPages - 1}`,
+			`${numOfPages}`,
+		];
+	}
+	if (currentPage > 3 && currentPage < numOfPages - 2) {
+		return [
+			'1',
+			'...',
+			`${currentPage - 1}`,
+			`${currentPage}`,
+			`${currentPage + 1}`,
+			'...',
+			`${numOfPages}`,
+		];
+	}
+	return [];
+};
 
 const Pagination = () => {
-  return (
-    <div className={classes.pagination}>Pagination</div>
-  )
-}
+	const pages = useSelector((state: StoreState) => state.characters.info.count);
+	const currentPage = useSelector(
+		(state: StoreState) => state.characters.currentPage
+	);
+	const numOfPages = Math.ceil(pages / 20);
 
-export default Pagination
+	const numbersToDisplay = definePaginationArray(numOfPages, currentPage);
+	const content = numbersToDisplay.map((item) =>
+		item !== '...' ? (
+			<PaginationButton key={item} content={`${item}`} />
+		) : (
+			<p key={Math.random()}>...</p>
+		)
+	);
+
+	return (
+		<div className={classes.pagination}>
+			<PaginationButton maxPage={numOfPages} key={'<'} content='<' />
+			{content}
+			<PaginationButton maxPage={numOfPages} key={'>'} content='>' />
+		</div>
+	);
+};
+
+export default Pagination;

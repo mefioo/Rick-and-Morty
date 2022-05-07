@@ -86,9 +86,8 @@ const filterCharactersData = (
 	return { info: data.info, results: charactersInfo };
 };
 
-export const getCharacters = () => {
+export const getCharacters = (apiLink: string, pageNumber: number) => {
 	return async (dispatch: any) => {
-		const apiLink = 'https://rickandmortyapi.com/api/character';
 		const fetchData = async () => {
 			const response = await fetch(apiLink);
 			const data = await response.json();
@@ -105,9 +104,10 @@ export const getCharacters = () => {
 			]);
 
 			dispatch(
-				charactersActions.changeCharacters(
-					filterCharactersData(data, originsAndLocations, episodes)
-				)
+				charactersActions.updateCharacters({
+					...filterCharactersData(data, originsAndLocations, episodes),
+					currentPage: pageNumber,
+				})
 			);
 		} catch (error) {
 			console.log(error);

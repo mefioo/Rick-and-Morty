@@ -56,6 +56,7 @@ export type necessaryApiDataType = {
 		prev: null;
 	};
 	results: necessaryCharacterInfoType[];
+	currentPage: number;
 };
 
 export type locationsType = {
