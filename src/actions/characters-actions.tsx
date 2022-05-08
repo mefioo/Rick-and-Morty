@@ -1,15 +1,12 @@
-import { CaseReducerActions } from '@reduxjs/toolkit';
-import { iteratorSymbol } from 'immer/dist/internal';
+import { API_EPISODE, API_LOCATION } from '../constants';
 import { charactersActions } from '../slices/characters-slice';
+import { errorActions } from '../slices/error-slice';
 import { tableRowActions } from '../slices/table-row-slice';
 import {
 	apiDataType,
 	characterInfoType,
 	locationsType,
 } from '../types/tableTypes';
-
-const API_LOCATION = 'https://rickandmortyapi.com/api/location/';
-const API_EPISODE = 'https://rickandmortyapi.com/api/episode/';
 
 const createSetOfNumbersFromStrings = (array: string[]) => {
 	return [
@@ -143,11 +140,21 @@ export const updateCharacters = (
 				tableRowActions.updateRows({
 					rows: dataToDispatch.results
 						.slice(0, 5)
-						.map((item) => ({ id: item.id, isChecked: false })),
+						.map((item) => ({
+							id: item.id,
+							isChecked: false,
+							status: item.status,
+						})),
 				})
 			);
 		} catch (error) {
-			console.log(error);
+			dispatch(
+				errorActions.setError({
+					title: 'Error while fetching data',
+					code: 0,
+					message: String(error),
+				})
+			);
 		}
 	};
 };

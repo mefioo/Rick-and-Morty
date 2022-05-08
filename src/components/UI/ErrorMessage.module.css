@@ -1,0 +1,42 @@
+.error {
+	position: fixed;
+	z-index: 10;
+	top: 30%;
+	left: 50%;
+	width: 40%;
+	height: auto;
+	transform: translate(-50%, -50%);
+	color: rgba(26, 35, 40, 1);
+	border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 18px 2px rgba(140, 145, 147, 1);
+	-moz-box-shadow: 0px 0px 18px 2px rgba(140, 145, 147, 1);
+	box-shadow: 0px 0px 18px 2px rgba(140, 145, 147, 1);
+	background-color: rgba(246, 248, 250, 0.9);
+	font-family: 'Oswald';
+}
+
+.error h2 {
+    margin-left: 20px;
+}
+
+.error p {
+	margin: 20px;
+	color: rgba(72, 79, 83, 1);
+}
+
+.exit {
+	position: absolute;
+	top: 10px;
+	right: 15px;
+}
+
+.icon {
+	font-size: 30px;
+	transition: color 0.3s ease-in-out;
+	color: rgba(26, 35, 40, 1);
+}
+
+.icon:hover {
+	color: rgba(72, 79, 83, 1);
+	cursor: pointer;
+}

@@ -5,12 +5,19 @@ import classes from './TableRow.module.css';
 import Location from './Location';
 import Paragraphs from './Paragraphs';
 import Status from './Status';
+import { useSelector } from 'react-redux';
+import { StoreState } from '../../store';
+import DropdownInput from './DropdownInput';
 
 const TableRow = React.memo((data: necessaryCharacterInfoType) => {
 	const [isOriginHovered, setIsOriginHovered] = useState(false);
 	const isDead = useMemo(() => {
 		return data.status === 'Dead';
 	}, [data.status]);
+
+	const rows = useSelector((state: StoreState) => state.tableRows.rows);
+	const isChecked = rows.find((item) => item.id === data.id)?.isChecked;
+	const noCheckedRows = rows.filter((item) => item.isChecked).length;
 
 	const originHoverHandler = () => {
 		setIsOriginHovered(true);
@@ -27,7 +34,7 @@ const TableRow = React.memo((data: necessaryCharacterInfoType) => {
 			{data.id && (
 				<React.Fragment>
 					<td>
-						<Checkbox ids={[data.id]} disabled={false} />
+						<Checkbox id={data.id} disabled={false} />
 					</td>
 					<td>
 						<Paragraphs
@@ -65,7 +72,12 @@ const TableRow = React.memo((data: necessaryCharacterInfoType) => {
 						/>
 					</td>
 					<td className={classes.status}>
-						<Status status={data.status} />
+						{(!isChecked || data.status === 'Dead' || noCheckedRows > 1) && (
+							<Status status={data.status} />
+						)}
+						{isChecked && data.status !== 'Dead' && noCheckedRows === 1 && (
+							<DropdownInput characterStatus={data.status} id={data.id} />
+						)}
 					</td>
 				</React.Fragment>
 			)}

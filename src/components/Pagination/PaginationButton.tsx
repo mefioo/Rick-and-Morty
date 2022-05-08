@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classes from './PaginationButton.module.css';
 import { StoreState } from '../../store';
@@ -17,6 +17,20 @@ const PaginationButton = (props: { content: string; maxPage?: number }) => {
 		String(pageNo) === props.content
 			? `${classes.button} ${classes['button--current']}`
 			: classes.button;
+
+	useEffect(() => {
+		dispatch(
+			tableRowActions.updateRows({
+				rows: results
+					.slice((pageNo - 1) * 5, (pageNo - 1) * 5 + 5)
+					.map((item) => ({
+						id: item.id,
+						isChecked: false,
+						status: item.status,
+					})),
+			})
+		);
+	}, [results, pageNo, dispatch]);
 
 	const buttonClickHandler = (event: SyntheticEvent) => {
 		const target = event.target as HTMLButtonElement;
@@ -40,13 +54,6 @@ const PaginationButton = (props: { content: string; maxPage?: number }) => {
 
 		dispatch(
 			charactersActions.updatePageNumber({ currentPage: usersPageChoice })
-		);
-		dispatch(
-			tableRowActions.updateRows({
-				rows: results
-					.slice((usersPageChoice - 1) * 5, (usersPageChoice - 1) * 5 + 5)
-					.map((item) => ({ id: item.id, isChecked: false })),
-			})
 		);
 	};
 

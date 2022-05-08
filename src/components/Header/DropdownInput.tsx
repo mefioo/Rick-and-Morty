@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import { SyntheticEvent } from 'react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classes from './Input.module.css';
@@ -33,8 +33,8 @@ const DropdownInput = ({
 				</button>
 			)}
 			{select && (
-				<select onChange={selectStatusHandler}>
-					<option disabled selected>
+				<select defaultValue='Status' onChange={selectStatusHandler}>
+					<option value='Status' disabled>
 						Status
 					</option>
 					<option value='All'>All</option>

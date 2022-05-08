@@ -4,11 +4,14 @@ type rowType = {
 	rows: {
 		id: number;
 		isChecked: boolean;
+		status: string
 	}[];
+	allChecked: boolean;
 };
 
 const initialState: rowType = {
 	rows: [],
+	allChecked: false,
 };
 
 const tableRowSlice = createSlice({
@@ -17,6 +20,10 @@ const tableRowSlice = createSlice({
 	reducers: {
 		updateRows(state, action) {
 			state.rows = action.payload.rows;
+		},
+		updateAll(state, action) {
+			state.rows = action.payload.rows;
+			state.allChecked = !state.allChecked;
 		},
 	},
 });
