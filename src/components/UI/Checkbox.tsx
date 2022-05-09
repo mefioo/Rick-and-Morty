@@ -15,7 +15,9 @@ const Checkbox = ({ id, disabled }: { id: number; disabled: boolean }) => {
 
 	const checkCheckboxHandler = () => {
 		const updatedRows = rows.map((item) =>
-			item.id === id ? { id: item.id, isChecked: !item.isChecked } : item
+			item.id === id
+				? { id: item.id, isChecked: !item.isChecked, status: item.status }
+				: item
 		);
 		dispatch(tableActions.updateRows({ rows: updatedRows }));
 	};

@@ -76,7 +76,7 @@ export const getAllCharacters = () => {
 			const dataToDispatch = {
 				info: {
 					charactersNo: characters.length,
-					locationsNo: locations.length,
+					locationsNo: locations.length + 1,
 					episodesNo: episodes.length,
 				},
 				...filterCharactersData(
@@ -84,7 +84,9 @@ export const getAllCharacters = () => {
 					locationsToFilter,
 					episodesToFilter
 				),
-				locations: locationsToFilter,
+				locations: locationsToFilter.concat([
+					{ id: locationsToFilter.length + 1, name: 'unknown', type: '' },
+				]),
 				pages: Math.ceil(characters.length / 5),
 			};
 

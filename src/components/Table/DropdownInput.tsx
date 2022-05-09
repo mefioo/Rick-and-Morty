@@ -38,7 +38,11 @@ const DropdownInput = ({
 		);
 
 	return (
-		<select onChange={changeOptionHandler} className={classes.select}>
+		<select
+			defaultValue={characterStatus}
+			onChange={changeOptionHandler}
+			className={classes.select}
+		>
 			{options}
 		</select>
 	);

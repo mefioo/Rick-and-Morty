@@ -79,7 +79,7 @@ const DropdownInput = ({
 						</option>
 						<option value='All'>All</option>
 						<option value='Alive'>Alive</option>
-						<option value='Unknown'>unknown</option>
+						<option value='unknown'>unknown</option>
 						<option value='Dead'>Dead</option>
 					</select>
 					<FontAwesomeIcon className={classes.icon} icon={icon} />

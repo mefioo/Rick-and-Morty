@@ -47,6 +47,7 @@ const EditPanel = () => {
 			character.id === id ? { ...character, status: tableRowStatus } : character
 		);
 
+
 		dispatch(
 			apiInfoActions.setApiInfo({
 				...apiInfo,
