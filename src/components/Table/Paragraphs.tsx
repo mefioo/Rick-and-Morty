@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './Paragraphs.module.css';
 import ReactTooltip from 'react-tooltip';
+import { TOOLTIP_CHARS } from '../../constants';
 
 type propsType = {
 	className: string[];
@@ -27,6 +28,7 @@ const Paragraphs = (props: propsType) => {
 			: {};
 
 	const nameLength = props.name.length;
+
 	const additionalInfoLength = props.additionalInfo
 		? props.additionalInfo.length
 		: 0;
@@ -34,11 +36,13 @@ const Paragraphs = (props: propsType) => {
 	return (
 		<React.Fragment>
 			<p
-				data-tip={nameLength > 27 ? props.name : ''}
+				data-tip={nameLength > TOOLTIP_CHARS ? props.name : ''}
 				style={nameStyle}
 				className={classes[props.className[0]]}
 			>
-				{nameLength > 27 ? props.name.slice(0, 27) + '...' : props.name}
+				{nameLength > TOOLTIP_CHARS
+					? props.name.slice(0, TOOLTIP_CHARS) + '...'
+					: props.name}
 			</p>
 			<ReactTooltip></ReactTooltip>
 			{props.additionalInfo !== '' && (
@@ -46,9 +50,13 @@ const Paragraphs = (props: propsType) => {
 					<p
 						style={props.dead ? { color: '#8C9193' } : {}}
 						className={classes[props.className[1]]}
-						data-tip={additionalInfoLength > 27 ? props.additionalInfo : ''}
+						data-tip={
+							additionalInfoLength > TOOLTIP_CHARS ? props.additionalInfo : ''
+						}
 					>
-						{props.additionalInfo}
+						{additionalInfoLength > TOOLTIP_CHARS
+							? props.additionalInfo.slice(0, TOOLTIP_CHARS) + '...'
+							: props.additionalInfo}
 					</p>
 					<ReactTooltip></ReactTooltip>
 				</React.Fragment>

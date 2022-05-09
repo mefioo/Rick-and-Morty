@@ -7,9 +7,9 @@ import TableHeaderCheckbox from './TableHeaderCheckbox';
 
 const TableHeader = () => {
 	const resultsLength = useSelector(
-		(state: StoreState) => state.characters.results.length
+		(state: StoreState) => state.apiInfo.info.charactersNo
 	);
-	const idInRows = useSelector((state: StoreState) => state.tableRows.rows).map(
+	const idInRows = useSelector((state: StoreState) => state.table.rows).map(
 		(item) => item.id
 	);
 

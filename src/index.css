@@ -13,3 +13,21 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 		monospace;
 }
+
+.dropdown-container {
+	font-size: 14px;
+	border: none;
+}
+
+.rmsc .dropdown-container {
+	margin-top: -1px;
+	margin-left: -1px;
+	margin-right: -1px;
+	padding-bottom: 2px;
+	padding-right: 2px;
+}
+
+.dropdown-content div span {
+	height: 40px;
+	width: 140px;
+}

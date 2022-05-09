@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { tableRowActions } from '../../slices/table-row-slice';
+import { tableActions } from '../../slices/table-slice';
 import { StoreState } from '../../store';
 import classes from './Checkbox.module.css';
 
 const Checkbox = ({ id, disabled }: { id: number; disabled: boolean }) => {
-	const rows = useSelector((state: StoreState) => state.tableRows.rows);
+	const rows = useSelector((state: StoreState) => state.table.rows);
 
 	const isChecked =
 		rows.filter((item) => item.id === id).length > 0
@@ -15,11 +15,9 @@ const Checkbox = ({ id, disabled }: { id: number; disabled: boolean }) => {
 
 	const checkCheckboxHandler = () => {
 		const updatedRows = rows.map((item) =>
-			item.id === id
-				? { id: item.id, isChecked: !item.isChecked, status: item.status }
-				: item
+			item.id === id ? { id: item.id, isChecked: !item.isChecked } : item
 		);
-		dispatch(tableRowActions.updateRows({ rows: updatedRows }));
+		dispatch(tableActions.updateRows({ rows: updatedRows }));
 	};
 
 	return (

@@ -48,9 +48,9 @@ const definePaginationArray = (numOfPages: number, currentPage: number) => {
 };
 
 const Pagination = () => {
-	const pages = useSelector((state: StoreState) => state.characters.info.count);
+	const pages = useSelector((state: StoreState) => state.table.rows.length);
 	const currentPage = useSelector(
-		(state: StoreState) => state.characters.currentPage
+		(state: StoreState) => state.table.currentPage
 	);
 	const numOfPages = Math.ceil((pages * 4) / 20);
 

@@ -3,7 +3,7 @@ import classes from './Input.module.css';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { linkActions } from '../../slices/link-slice';
+import { filtersActions } from '../../slices/filters-slice';
 
 const Input = ({
 	placeholder,
@@ -18,7 +18,7 @@ const Input = ({
 
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
-			dispatch(linkActions.changeName({ name }));
+			dispatch(filtersActions.changeName({ name }));
 		}, 700);
 		return () => {
 			clearTimeout(timeoutId);

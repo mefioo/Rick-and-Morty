@@ -1,15 +1,18 @@
-import React from 'react';
 import classes from './EditPanel.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreState } from '../../store';
 import { errorActions } from '../../slices/error-slice';
-import { charactersActions } from '../../slices/characters-slice';
+import { apiInfoActions } from '../../slices/api-info-slice';
 
 const EditPanel = () => {
-	const tableRows = useSelector((state: StoreState) => state.tableRows.rows);
-	const characters = useSelector((state: StoreState) => state.characters);
+	const tableRows = useSelector((state: StoreState) => state.table.rows);
+	const id = tableRows.find((item) => item.isChecked)?.id;
+
+	const apiInfo = useSelector((state: StoreState) => state.apiInfo);
+	const allCharacters = apiInfo.characters;
+
 	const dispatch = useDispatch();
 
 	const checkedNumber = tableRows.filter(
@@ -29,25 +32,43 @@ const EditPanel = () => {
 			return;
 		}
 
-		const id = tableRows.find((item) => item.isChecked)?.id;
-		const character = characters.results.filter((item) => item.id === id)[0];
+		const characterById = allCharacters.find((item) => item.id === id) || {
+			status: 'Dead',
+		};
 
-		if (character.status === 'Dead') {
+		if (characterById.status === 'Dead') {
 			dispatch(errorActions.setError(errorMessage));
 			return;
 		}
 
 		const tableRowStatus = tableRows.find((item) => item.id === id)?.status;
 
-		const updatedCharacters = characters.results.map((character) =>
+		const updatedCharacters = allCharacters.map((character) =>
 			character.id === id ? { ...character, status: tableRowStatus } : character
 		);
 
 		dispatch(
-			charactersActions.setCharacters({
-				info: characters.info,
-				results: updatedCharacters,
-				currentPage: characters.currentPage,
+			apiInfoActions.setApiInfo({
+				...apiInfo,
+				characters: updatedCharacters,
+			})
+		);
+	};
+
+	const removeCharacterHandler = () => {
+		const checkedCharacters = tableRows
+			.filter((item) => item.isChecked)
+			.map((item) => item.id);
+		const updatedCharacters = allCharacters.filter(
+			(character) => !checkedCharacters.includes(character.id)
+		);
+		console.log(updatedCharacters);
+		dispatch(
+			apiInfoActions.setApiInfo({
+				...apiInfo,
+				info: { ...apiInfo.info, charactersNo: updatedCharacters.length },
+				characters: updatedCharacters,
+				pages: Math.ceil(updatedCharacters.length / 5),
 			})
 		);
 	};
@@ -63,7 +84,10 @@ const EditPanel = () => {
 					<p>Change status</p>
 				</button>
 			)}
-			<button className={classes['button--red']}>
+			<button
+				onClick={removeCharacterHandler}
+				className={classes['button--red']}
+			>
 				<FontAwesomeIcon icon={faTrashCan} />
 				<p>Remove characters</p>
 			</button>

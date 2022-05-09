@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { necessaryCharacterInfoType } from '../../types/tableTypes';
+import { necessaryCharacterInfoType } from '../../types/types';
 import Checkbox from '../UI/Checkbox';
 import classes from './TableRow.module.css';
 import Location from './Location';
@@ -15,7 +15,7 @@ const TableRow = React.memo((data: necessaryCharacterInfoType) => {
 		return data.status === 'Dead';
 	}, [data.status]);
 
-	const rows = useSelector((state: StoreState) => state.tableRows.rows);
+	const rows = useSelector((state: StoreState) => state.table.rows);
 	const isChecked = rows.find((item) => item.id === data.id)?.isChecked;
 	const noCheckedRows = rows.filter((item) => item.isChecked).length;
 

@@ -1,55 +1,96 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCharacters } from '../actions/characters-actions';
+import { getAllCharacters } from '../actions/api-info-actions';
 import TableHeader from '../components/Table/TableHeader';
 import TableRow from '../components/Table/TableRow';
-import { loadingActions } from '../slices/lodaing-slice';
+import { tableActions } from '../slices/table-slice';
 import { StoreState } from '../store';
+import { necessaryCharacterInfoType } from '../types/types';
 import classes from './Table.module.css';
 
-const buildApiLink = (data: {
-	apiLink: string;
-	name: string;
-	status: string;
-}) => {
-	const apiName = data.name === '' ? '' : `name=${data.name}&`;
-	const apiStatus = data.status === 'All' ? '' : `status=${data.status}&`;
-	const qMark = apiName !== '' || apiStatus !== '' ? '?' : '';
-	return data.apiLink + qMark + apiName + apiStatus;
+const filterCharacters = (
+	characters: necessaryCharacterInfoType[],
+	nameFilter: string,
+	status: string,
+	species: { id: number; name: string }[],
+	origins: { id: number; name: string }[]
+) => {
+	const nameFiltered = characters.filter((item) =>
+		item.name.toLowerCase().includes(nameFilter.toLowerCase().trim())
+	);
+	const statusFiltered =
+		status === 'All'
+			? nameFiltered
+			: nameFiltered.filter((item) => item.status === status);
+
+	const speciesFiltered =
+		species.length === 10
+			? statusFiltered
+			: statusFiltered.filter((character) =>
+					species.map((item) => item.name).includes(character.species)
+			  );
+
+	const originsFiltered =
+		origins.length === 126
+			? speciesFiltered
+			: speciesFiltered.filter((character) =>
+					origins.map((item) => item.name).includes(character.origin.name)
+			  );
+
+	return originsFiltered;
 };
 
 const Table = React.memo(() => {
 	const dispatch = useDispatch();
 
 	const isLoading = useSelector((state: StoreState) => state.loading.isLoading);
-	const characters = useSelector((state: StoreState) => state.characters);
-	const link = useSelector((state: StoreState) => state.link);
-	const apiLink = buildApiLink(link);
+	const apiInfo = useSelector((state: StoreState) => state.apiInfo);
+	const allCharacters = apiInfo.characters;
 
-	const loadedCharactersNo = characters.results.length;
+	const table = useSelector((state: StoreState) => state.table);
+	const currentPage = table.currentPage;
+	const currentCharacters = table.rows
+		.slice(currentPage * 5 - 5, currentPage * 5)
+		.map(
+			(item) => allCharacters.filter((character) => character.id === item.id)[0]
+		);
 
-	const charactersAmount = characters.info.count;
-	const pageNo = characters.currentPage;
-	const nextPage = characters.info.next;
-
-	useEffect(() => {
-		if (
-			pageNo * 5 > loadedCharactersNo &&
-			loadedCharactersNo !== charactersAmount &&
-			charactersAmount !== 0
-		) {
-			dispatch(loadingActions.setIsLoading({ isLoading: true }));
-			dispatch(updateCharacters(nextPage, pageNo, 'ADD') as any);
-		} else {
-			dispatch(loadingActions.setIsLoading({ isLoading: false }));
-		}
-	}, [pageNo, dispatch, charactersAmount, nextPage]);
+	const filters = useSelector((state: StoreState) => state.filters);
+	const nameFilter = filters.name;
+	const statusFilter = filters.status;
+	const speciesFilter = filters.species;
+	const originsFilter = filters.origins;
 
 	useEffect(() => {
-		dispatch(loadingActions.setIsLoading({ isLoading: true }));
-		dispatch(updateCharacters(apiLink, 1, 'SET') as any);
-		dispatch(loadingActions.setIsLoading({ isLoading: false }));
-	}, [dispatch, apiLink]);
+		dispatch(getAllCharacters() as any);
+	}, [dispatch]);
+
+	useEffect(() => {
+		const filteredCharacters = filterCharacters(
+			allCharacters,
+			nameFilter,
+			statusFilter,
+			speciesFilter,
+			originsFilter
+		);
+
+		dispatch(
+			tableActions.updateRows({
+				rows: filteredCharacters.map((item) => ({
+					id: item.id,
+					isChecked: false,
+					status: item.status,
+				})),
+			})
+		);
+	}, [
+		dispatch,
+		allCharacters,
+		nameFilter,
+		statusFilter,
+		speciesFilter,
+		originsFilter,
+	]);
 
 	return (
 		<div className={classes.table}>
@@ -58,11 +99,11 @@ const Table = React.memo(() => {
 				<tbody>
 					{!isLoading && (
 						<React.Fragment>
-							<TableRow {...characters.results[(pageNo - 1) * 5]} />
-							<TableRow {...characters.results[(pageNo - 1) * 5 + 1]} />
-							<TableRow {...characters.results[(pageNo - 1) * 5 + 2]} />
-							<TableRow {...characters.results[(pageNo - 1) * 5 + 3]} />
-							<TableRow {...characters.results[(pageNo - 1) * 5 + 4]} />
+							<TableRow {...currentCharacters[0]} />
+							<TableRow {...currentCharacters[1]} />
+							<TableRow {...currentCharacters[2]} />
+							<TableRow {...currentCharacters[3]} />
+							<TableRow {...currentCharacters[4]} />
 						</React.Fragment>
 					)}
 				</tbody>

@@ -1,36 +1,19 @@
-import React, { SyntheticEvent, useEffect } from 'react';
+import { SyntheticEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classes from './PaginationButton.module.css';
 import { StoreState } from '../../store';
-import { charactersActions } from '../../slices/characters-slice';
-import { tableRowActions } from '../../slices/table-row-slice';
+import { tableActions } from '../../slices/table-slice';
 
 const PaginationButton = (props: { content: string; maxPage?: number }) => {
 	const dispatch = useDispatch();
 
-	const pageNo = useSelector(
-		(state: StoreState) => state.characters.currentPage
-	);
-	const results = useSelector((state: StoreState) => state.characters.results);
+	const table = useSelector((state: StoreState) => state.table);
+	const pageNo = table.currentPage;
 
 	const className =
 		String(pageNo) === props.content
 			? `${classes.button} ${classes['button--current']}`
 			: classes.button;
-
-	useEffect(() => {
-		dispatch(
-			tableRowActions.updateRows({
-				rows: results
-					.slice((pageNo - 1) * 5, (pageNo - 1) * 5 + 5)
-					.map((item) => ({
-						id: item.id,
-						isChecked: false,
-						status: item.status,
-					})),
-			})
-		);
-	}, [results, pageNo, dispatch]);
 
 	const buttonClickHandler = (event: SyntheticEvent) => {
 		const target = event.target as HTMLButtonElement;
@@ -52,9 +35,9 @@ const PaginationButton = (props: { content: string; maxPage?: number }) => {
 				break;
 		}
 
-		dispatch(
-			charactersActions.updatePageNumber({ currentPage: usersPageChoice })
-		);
+		dispatch(tableActions.unselectAllRows())
+
+		dispatch(tableActions.updatePageNumber({ currentPage: usersPageChoice }));
 	};
 
 	return (

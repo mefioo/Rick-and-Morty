@@ -1,6 +1,6 @@
 import classes from '../UI/Checkbox.module.css';
 import { useDispatch } from 'react-redux';
-import { tableRowActions } from '../../slices/table-row-slice';
+import { tableActions } from '../../slices/table-slice';
 import { useSelector } from 'react-redux';
 import { StoreState } from '../../store';
 
@@ -12,17 +12,21 @@ const TableHeaderCheckbox = ({
 	disabled: boolean;
 }) => {
 	const dispatch = useDispatch();
-	const { rows, allChecked } = useSelector(
-		(state: StoreState) => state.tableRows
+	const { rows, allChecked, currentPage } = useSelector(
+		(state: StoreState) => state.table
 	);
 
 	const checkCheckboxHandler = () => {
+		const firstIndex = currentPage * 5 - 5;
+		const lastIndex = currentPage * 5;
+		const updatedRows = rows.map((item, index) =>
+			index >= firstIndex && index < lastIndex
+				? { ...item, isChecked: !allChecked }
+				: item
+		);
 		dispatch(
-			tableRowActions.updateAll({
-				rows: rows.map((item) => ({
-					id: item.id,
-					isChecked: !allChecked,
-				})),
+			tableActions.updateAll({
+				rows: updatedRows,
 			})
 		);
 	};
@@ -33,6 +37,7 @@ const TableHeaderCheckbox = ({
 			disabled={disabled}
 			className={classes.checkbox}
 			type='checkbox'
+			checked={allChecked}
 		></input>
 	);
 };

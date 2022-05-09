@@ -1,6 +1,6 @@
 import React, { SyntheticEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { tableRowActions } from '../../slices/table-row-slice';
+import { tableActions } from '../../slices/table-slice';
 import { StoreState } from '../../store';
 import classes from './DropdownInput.module.css';
 
@@ -13,14 +13,14 @@ const DropdownInput = ({
 }) => {
 	const dispatch = useDispatch();
 
-	const tableRows = useSelector((state: StoreState) => state.tableRows.rows);
+	const tableRows = useSelector((state: StoreState) => state.table.rows);
 
 	const changeOptionHandler = (event: SyntheticEvent) => {
 		const target = event.target as HTMLSelectElement;
 		const updatedRows = tableRows.map((item) =>
 			item.id === id ? { ...item, status: target.value } : item
 		);
-		dispatch(tableRowActions.updateRows({ rows: updatedRows }));
+		dispatch(tableActions.updateRows({ rows: updatedRows }));
 	};
 
 	const options =
