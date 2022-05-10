@@ -47,7 +47,6 @@ const EditPanel = () => {
 			character.id === id ? { ...character, status: tableRowStatus } : character
 		);
 
-
 		dispatch(
 			apiInfoActions.setApiInfo({
 				...apiInfo,
@@ -60,10 +59,22 @@ const EditPanel = () => {
 		const checkedCharacters = tableRows
 			.filter((item) => item.isChecked)
 			.map((item) => item.id);
+
+		if (checkedCharacters.length === 0) {
+			dispatch(
+				errorActions.setError({
+					title: 'Error while removing characters',
+					code: 0,
+					message: 'Please select at least one of the characters to remove it.',
+				})
+			);
+			return;
+		}
+
 		const updatedCharacters = allCharacters.filter(
 			(character) => !checkedCharacters.includes(character.id)
 		);
-		
+
 		dispatch(
 			apiInfoActions.setApiInfo({
 				...apiInfo,
