@@ -4,7 +4,7 @@
 	justify-content: space-between;
 	align-items: center;
 	margin-right: 30px;
-	color: #484F53;
+	color: #484f53;
 }
 
 .label p {
@@ -30,4 +30,8 @@
 
 .icon:nth-child(2) {
 	margin-top: -10px;
+}
+
+.selected {
+	color: rgba(95, 101, 105, 1);
 }

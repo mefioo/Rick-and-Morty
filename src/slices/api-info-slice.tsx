@@ -18,6 +18,9 @@ const apiInfoSlice = createSlice({
 			state.locations = action.payload.locations;
 			state.pages = action.payload.pages;
 		},
+		changeCharacters(state, action) {
+			state.characters = action.payload.characters;
+		},
 	},
 });
 
