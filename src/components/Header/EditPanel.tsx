@@ -63,7 +63,7 @@ const EditPanel = () => {
 		const updatedCharacters = allCharacters.filter(
 			(character) => !checkedCharacters.includes(character.id)
 		);
-		console.log(updatedCharacters);
+		
 		dispatch(
 			apiInfoActions.setApiInfo({
 				...apiInfo,

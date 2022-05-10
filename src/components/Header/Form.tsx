@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { StoreState } from '../../store';
 
 const Form = () => {
-	const origins: { id: number; name: string; type: string }[] = useSelector(
+	const locations: { id: number; name: string; type: string }[] = useSelector(
 		(state: StoreState) => state.apiInfo.locations
 	);
 
@@ -18,7 +18,7 @@ const Form = () => {
 		<form className={classes.form}>
 			<Input placeholder='Search' icon={faMagnifyingGlass} />
 			<DropdownInput options={SPECIES} label='Species' icon={faSortDown} />
-			<DropdownInput options={origins} label='Origin' icon={faSortDown} />
+			<DropdownInput options={locations} label='Origin' icon={faSortDown} />
 			<DropdownInput
 				options={STATUSES}
 				select

@@ -1,4 +1,3 @@
-import React from 'react';
 import classes from './Label.module.css'
 import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

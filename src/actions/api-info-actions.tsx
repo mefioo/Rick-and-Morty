@@ -54,7 +54,7 @@ export const getAllCharacters = () => {
 			const locationsList = [...new Array(126).keys()]
 				.map((item) => item + 1)
 				.join(',');
-			const episodesList = [...new Array(126).keys()]
+			const episodesList = [...new Array(51).keys()]
 				.map((item) => item + 1)
 				.join(',');
 

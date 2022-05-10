@@ -29,5 +29,16 @@ code {
 
 .dropdown-content div span {
 	height: 40px;
-	width: 140px;
+}
+
+.multi-select {
+	font-size: 25px;
+}
+
+.item-renderer input {
+	display: none;
+}
+
+.item-renderer span {
+	font-size: 12px;
 }

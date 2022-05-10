@@ -1,4 +1,3 @@
-import React from 'react';
 import EditPanel from './EditPanel';
 import Form from './Form';
 import classes from './Header.module.css';
